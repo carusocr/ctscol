@@ -7,7 +7,7 @@ telco_mysql:
     host:        'thalia2.ldc.upenn.edu'
     database:    'telco_master'
     userid:      'toku'
-    passwd:      'kh0#tn21'
+    passwd:      '________'
     dbistr:      'DBI:mysql:host=thalia2.ldc.upenn.edu;database=telco_master'
 projname:
     1:           'mx3'
