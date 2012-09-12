@@ -1,0 +1,27 @@
+vosenv:
+    FUNCDIR:    'c:\fisher_v0.7\Function'
+    INCDIR:    'c:\fisher_v0.7\Include'
+    PARDIR:    'c:\Program Files\vos_env\cfg'
+    VOSFONTNAME:  Courier New
+    VOSFONTSIZE:  12
+    VOSLOGDIR:    'p:\proc'
+    VOSNODIALOGS: YES
+    VOSNOSPLASH:  YES
+    VXDIR:    'c:\fisher_v0.7\Bin'
+    VOSEXEC:    c:\Program Files\vos_env\exe\vos6w.exe
+vlcenv:
+    FUNCDIR:    'c:\cygwin\home\ctscoll\fisher_v0.7\Function'
+    INCDIR:    'c:\cygwin\home\ctscoll\fisher_v0.7\Include'
+    VXDIR:    'c:\cygwin\home\ctscoll\fisher_v0.7\Bin'
+    VLCEXEC:    c:\Program Files\vos_env\exe\vlc6w.exe
+eventlog:
+    Computer:    ATLAS1
+    Source:    fisher_v0.7
+    EventType:    EVENTLOG_INFORMATION_TYPE
+    Category:    'CTS Collection'
+    EventID:    1
+    Data:    'startup'
+    Strings:    ''
+vlcargs:
+    argstr:    '-e -u -v1'
+
