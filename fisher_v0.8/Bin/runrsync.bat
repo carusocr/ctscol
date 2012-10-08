@@ -3,7 +3,7 @@ cd \
 cd \vos_record\mx3
 rsync -av --progress ./ walkerk@kronus.ldc.upenn.edu:/v20/mixer3_audio/incoming/
 cd \
-cd \fisher_v0.5
+cd \fisher_v0.8
 perl archive_code.pl
 rsync -av --progress *.tar walkerk@kronus.ldc.upenn.edu:/v20/mixer3_audio/platform_code/
 rm *.tar

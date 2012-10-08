@@ -19,7 +19,7 @@ our @EXPORT = qw(get_dbh        rel_dbh       cvt_period
 
 our $VERSION = 1.2;
 
-my $fshyml = LoadFile('c:/fisher_v0.7/Perl/FshPerl.yml');
+my $fshyml = LoadFile('c:/fisher_v0.8/Perl/FshPerl.yml');
 
 our $proc_dir  = $fshyml->{proc}->{proc_dir};
 our $dberr_dir = $fshyml->{dberr}->{dberr_dir};

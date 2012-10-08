@@ -2,7 +2,7 @@
 
 use Archive::Tar;
 use DBI;
-use lib "d:/fisher_v0.5/Perl/";
+use lib "d:/fisher_v0.8/Perl/";
 use FshPerl;
 use Semfile;
 $pid = shift;

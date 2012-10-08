@@ -1,7 +1,7 @@
 #!c:/perl/bin/perl.exe
 
 use DBI;
-use lib "d:/fisher_v0.5/Perl/";
+use lib "d:/fisher_v0.8/Perl/";
 use FshPerl;
 
 my $dbh = DBI->connect($telco_mysql{dbistr},

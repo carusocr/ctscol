@@ -13,10 +13,10 @@ use Data::Dumper;
 my $vos_pid = my $vosrt = undef;
 use sigtrap 'handler' => \&stopvos, 'normal-signals';
 
-chdir('c:\fisher_v0.7\Bin');
+chdir('c:\fisher_v0.8\Bin');
 
 my %erpt_tbl = ();
-my $yml_init = LoadFile('c:\fisher_v0.7\bin\init.yml');
+my $yml_init = LoadFile('c:\fisher_v0.8\bin\init.yml');
 
 foreach my $eset(qw/vosenv eventlog/){
     foreach my $k(keys(%{ $yml_init->{$eset} })){
@@ -29,7 +29,7 @@ foreach my $eset(qw/vosenv eventlog/){
     }
 }
 
-my $evlh = Win32::EventLog->new("fisher_v0.7");
+my $evlh = Win32::EventLog->new("fisher_v0.8");
 
 $evlh->Report(\%erpt_tbl);
 

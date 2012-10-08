@@ -19,7 +19,7 @@ $timecond = sprintf("%%%s%%%0.2d%%",$dstr,$h);
 my $dbh = get_dbh();
 
 my %sidtbl = ();
-my $tdyrec_qry   = "c:/fisher_v0.7/Perl/fisher/tdyrecs.sql";
+my $tdyrec_qry   = "c:/fisher_v0.8/Perl/fisher/tdyrecs.sql";
 $/ = undef;
 open F,"$tdyrec_qry" || die "$!";
 $tdyrec_cmd = <F>;
@@ -35,8 +35,8 @@ $sth->finish;
 
 my $sidstr = join(",",keys %sidtbl);
 
-my $fullpool_qry = "c:/fisher_v0.7/Perl/fisher/testgetcallee.sql";
-my $ldcpool_qry  = "c:/fisher_v0.7/Perl/fisher/getcleldc.sql";
+my $fullpool_qry = "c:/fisher_v0.8/Perl/fisher/testgetcallee.sql";
+my $ldcpool_qry  = "c:/fisher_v0.8/Perl/fisher/getcleldc.sql";
 my $qry = undef;
 
 #if(ohct() > 0){
