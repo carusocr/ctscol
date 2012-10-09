@@ -1,6 +1,8 @@
 ctscol
 ======
 
+*Currently Modifying to work with new schema for MIXER8
+
 LDC Telephone Speech Collection Software
 Fisher v0.5     (used for LRE11)
 Fisher v0.6     (used briefly for SRE12)
