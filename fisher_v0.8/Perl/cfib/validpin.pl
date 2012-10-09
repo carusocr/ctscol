@@ -43,7 +43,7 @@ $sth = $dbh->prepare("SELECT lp.id
                       FROM participants p
                       JOIN participant_links pl ON p.id = pl.participant_id
                       JOIN participants lp ON pl.linked_participant_id = lp.id
-                      WHERE p.id = \'$subj_id\'")
+                      WHERE p.id = \'$subj_id\'");
 $sth->execute;
 my($ce_subj_id) = $sth->fetchrow;
 $sth->finish;
@@ -65,28 +65,40 @@ elsif ( $calls_done >= $max_allowed ) {
 else {
     # my $sth = $dbh->prepare( "update telco_subjects set cip='Y' where subj_id=?" );
     my $sth = $dbh->prepare("UPDATE participants
-                             SET conversation_in_progress = ")
+                             SET conversation_in_progress = 1
+                             WHERE participants.id = ?");
     $sth->execute( $subj_id );
     $sth->finish;
-    print "$subj_id $group_id $ce_subj_id\n";
+    # print "$subj_id $group_id $ce_subj_id\n";
+    print "$subj_id $ce_subj_id\n";
 
     procwrite($proc_id,"validate_resp","CFIBOK");
     procwrite($proc_id,"rec_length",900);
     
     procwrite($proc_id,"subj_id",$subj_id);
-    procwrite($proc_id,"group_id",$group_id);
-    procwrite($proc_id,"subgroup_id",$subgroup_id);
+    # procwrite($proc_id,"group_id",$group_id);
+    # procwrite($proc_id,"subgroup_id",$subgroup_id);
     procwrite($proc_id,"ce_subj_id",$ce_subj_id);
 
 
-    $sth = $dbh->prepare("select pin from lre11_subj where subj_id=?");
+    # $sth = $dbh->prepare("select pin from lre11_subj where subj_id=?");
+    $sth = $dbh->prepare("SELECT u.cts_pin
+                          FROM participants p
+                          JOIN \'$lui{database}\'.enrollments e ON p.enrollment_id = e.id
+                          JOIN \'$lui{database}\'.users u ON e.user_id = u.id
+                          WHERE p.id = ?");
     $sth->execute($ce_subj_id);
     ($ce_pin) = $sth->fetchrow;
     $sth->finish;
     procwrite($proc_id,"ce_pin",$ce_pin);
 
 
-    $sth = $dbh->prepare("select phone_number from telco_phones where subj_id=?");
+    # $sth = $dbh->prepare("select phone_number from telco_phones where subj_id=?");
+    $sth = $dbh->prepare("SELECT ph.number
+                          FROM participants p
+                          JOIN participant_phones pph ON p.id = pph.participant_id
+                          JOIN phones ph ON pph.phone_id = ph.id
+                          WHERE p.id = ?")
     $sth->execute($ce_subj_id);
     my ($ce_phnum) = $sth->fetchrow;
     $sth->finish;  
