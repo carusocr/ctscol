@@ -20,15 +20,30 @@ unlink "$proc_dir/$proc_id/validate_resp" if -e "$proc_dir/$proc_id/validate_res
 my $dbh = DBI->connect($telco_mysql{dbistr},$telco_mysql{userid},$telco_mysql{passwd}) || 
                        die "Cannot connect to server\n";
 
-my $sth = $dbh->prepare( "select subj_id, active, calls_done, max_allowed, group_id,
-                           IFNULL(subgroup_id,'0001_0000') from lre11_subj where pin=\'$pin\'");
+
+# my $sth = $dbh->prepare( "select subj_id, active, calls_done, max_allowed, group_id,
+                           # IFNULL(subgroup_id,'0001_0000') from lre11_subj where pin=\'$pin\'");
+
+my $sth = $dbh->prepare( "SELECT p.id AS participant_id, p.active, COUNT(DISTINCT a.conversation_id), p.max_conversations_allowed
+                          FROM participants p
+                          JOIN audio_objects a ON p.id = a.participant_id
+                          JOIN \'$lui{database}\'.enrollments e ON p.enrollment_id = e.id
+                          JOIN \'$lui{database}\'.users u ON e.user_id = u.id
+                          JOIN \'$lui{database}\'.collections c ON e.collection_id = c.id
+                          WHERE u.cts_pin = \'$pin\' AND c.name = \'$collection{name}\'");
 
 $sth->execute;
-my ($subj_id,$active,$calls_done,$max_allowed,$group_id,$subgroup_id) = $sth->fetchrow;
+# my ($subj_id,$active,$calls_done,$max_allowed,$group_id,$subgroup_id) = $sth->fetchrow;
+my ($subj_id,$active,$calls_done,$max_allowed) = $sth->fetchrow;
 $sth->finish;
 
-$sth = $dbh->prepare("select subj_id from lre11_subj where subgroup_id = \'$subgroup_id\'
-                      and pin <> \'$pin\'");
+# $sth = $dbh->prepare("select subj_id from lre11_subj where subgroup_id = \'$subgroup_id\'
+                      # and pin <> \'$pin\'");
+$sth = $dbh->prepare("SELECT lp.id 
+                      FROM participants p
+                      JOIN participant_links pl ON p.id = pl.participant_id
+                      JOIN participants lp ON pl.linked_participant_id = lp.id
+                      WHERE p.id = \'$subj_id\'")
 $sth->execute;
 my($ce_subj_id) = $sth->fetchrow;
 $sth->finish;
@@ -48,7 +63,9 @@ elsif ( $calls_done >= $max_allowed ) {
     procwrite($proc_id,"validate_resp","MAX_CALLS");
 }
 else {
-    my $sth = $dbh->prepare( "update telco_subjects set cip='Y' where subj_id=?" );
+    # my $sth = $dbh->prepare( "update telco_subjects set cip='Y' where subj_id=?" );
+    my $sth = $dbh->prepare("UPDATE participants
+                             SET conversation_in_progress = ")
     $sth->execute( $subj_id );
     $sth->finish;
     print "$subj_id $group_id $ce_subj_id\n";

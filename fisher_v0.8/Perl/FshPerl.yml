@@ -6,9 +6,11 @@ telco_mysql:
     driver:      'mysql'
     host:        'dbm.ldc.upenn.edu'
     database:    'ldc_db_staging'
-    userid:      'toku'
+    userid:      'ldc_db'
     passwd:      '________'
     dbistr:      'DBI:mysql:host=dbm.ldc.upenn.edu;database=ldc_db_staging'
+lui:
+    database:    'rails_staging'
 projname:
     1:           'mx3'
     2:           'fsp'

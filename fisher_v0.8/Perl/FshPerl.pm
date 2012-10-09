@@ -27,6 +27,12 @@ our $dberr_dir = $fshyml->{dberr}->{dberr_dir};
 our %telco_mysql = ();
 ymlset($fshyml,'telco_mysql',\%telco_mysql);
 
+our %lui = ();
+ymlset($fshyml,'lui',\%lui);
+
+our %collection = ();
+ymlset($fshyml,'collection',\%collection);
+
 our %projname = ();
 ymlset($fshyml, 'projname', \%projname);
 
