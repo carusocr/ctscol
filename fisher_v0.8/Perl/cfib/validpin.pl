@@ -2,7 +2,8 @@
 
 use DBI;
 
-use lib "d:/fisher_v0.8/Perl/";
+# use lib "d:/fisher_v0.8/Perl/";
+use lib "c:/cygwin/usr/local/src/ctscol/fisher_v0.8/Perl/";
 use FshPerl;
 use Semfile;
 my %timearry = ();
@@ -27,10 +28,10 @@ my $dbh = DBI->connect($telco_mysql{dbistr},$telco_mysql{userid},$telco_mysql{pa
 my $sth = $dbh->prepare( "SELECT p.id AS participant_id, p.active, COUNT(DISTINCT a.conversation_id), p.max_conversations_allowed
                           FROM participants p
                           JOIN audio_objects a ON p.id = a.participant_id
-                          JOIN \'$lui{database}\'.enrollments e ON p.enrollment_id = e.id
-                          JOIN \'$lui{database}\'.users u ON e.user_id = u.id
-                          JOIN \'$lui{database}\'.collections c ON e.collection_id = c.id
-                          WHERE u.cts_pin = \'$pin\' AND c.name = \'$collection{name}\'");
+                          JOIN $lui{database}.enrollments e ON p.enrollment_id = e.id
+                          JOIN $lui{database}.users u ON e.user_id = u.id
+                          JOIN $lui{database}.collections c ON e.collection_id = c.id
+                          WHERE u.cts_pin = $pin AND c.name = \'$collection{name}\'");
 
 $sth->execute;
 # my ($subj_id,$active,$calls_done,$max_allowed,$group_id,$subgroup_id) = $sth->fetchrow;
@@ -47,13 +48,13 @@ $sth = $dbh->prepare("SELECT lp.id
 $sth->execute;
 my($ce_subj_id) = $sth->fetchrow;
 $sth->finish;
-if($ce_subj_id !~ /\d+/){ $ce_subj_id = '99999' }
+if($ce_subj_id !~ /\d+/){ $ce_subj_id = '99999' } # may need to flesh this out to search for a claque
 
 
 if ( !defined( $subj_id )) {
     procwrite($proc_id,"validate_resp","INVALID_PIN");
 }
-elsif ( !defined( $active ) or $active ne 'Y' ) {
+elsif ( !defined( $active ) or $active ne 1 ) {
     procwrite($proc_id,"validate_resp","INACTIVE_PIN");
 }
 elsif ( !defined( $ce_subj_id )) {
@@ -84,8 +85,8 @@ else {
     # $sth = $dbh->prepare("select pin from lre11_subj where subj_id=?");
     $sth = $dbh->prepare("SELECT u.cts_pin
                           FROM participants p
-                          JOIN \'$lui{database}\'.enrollments e ON p.enrollment_id = e.id
-                          JOIN \'$lui{database}\'.users u ON e.user_id = u.id
+                          JOIN $lui{database}.enrollments e ON p.enrollment_id = e.id
+                          JOIN $lui{database}.users u ON e.user_id = u.id
                           WHERE p.id = ?");
     $sth->execute($ce_subj_id);
     ($ce_pin) = $sth->fetchrow;
@@ -98,7 +99,7 @@ else {
                           FROM participants p
                           JOIN participant_phones pph ON p.id = pph.participant_id
                           JOIN phones ph ON pph.phone_id = ph.id
-                          WHERE p.id = ?")
+                          WHERE p.id = ?");
     $sth->execute($ce_subj_id);
     my ($ce_phnum) = $sth->fetchrow;
     $sth->finish;  

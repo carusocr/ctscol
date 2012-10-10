@@ -5,12 +5,14 @@ dberr:
 telco_mysql:
     driver:      'mysql'
     host:        'dbm.ldc.upenn.edu'
-    database:    'ldc_db_staging'
+    database:    'ldc_db_development'
     userid:      'ldc_db'
-    passwd:      '________'
-    dbistr:      'DBI:mysql:host=dbm.ldc.upenn.edu;database=ldc_db_staging'
+    passwd:      'devpassword'
+    dbistr:      'DBI:mysql:host=walle.ldc.upenn.edu;database=ldc_db_development'
 lui:
-    database:    'rails_staging'
+    database:    'lui_dev'
+collection:
+    name:        'MIXER8 Pilot'
 projname:
     1:           'mx3'
     2:           'fsp'
@@ -37,11 +39,11 @@ projtbl:
         fsp:     'fsp_topics'
         mx3:     'mx3_topics'
 fisher_qryfiles:
-    FULLPOOL:    'c:/fisher_v0.8/Perl/fisher/getcallee.sql'
-    LDCPOOL:     'c:/fisher_v0.8/Perl/fisher/getcleldc.sql'
-    TDYRECS:     'c:/fisher_v0.8/Perl/fisher/tdyrecs.sql'
-    24HRRECS:    'c:/fisher_v0.8/Perl/fisher/24hrrecs.sql'
-    CALLCT:      'c:/fisher_v0.8/Perl/fisher/callct.sql'
+    FULLPOOL:    'c:/cygwin/usr/local/src/ctscol/fisher_v0.8/Perl/fisher/getcallee.sql'
+    LDCPOOL:     'c:/cygwin/usr/local/src/ctscol/fisher_v0.8/Perl/fisher/getcleldc.sql'
+    TDYRECS:     'c:/cygwin/usr/local/src/ctscol/fisher_v0.8/Perl/fisher/tdyrecs.sql'
+    24HRRECS:    'c:/cygwin/usr/local/src/ctscol/fisher_v0.8/Perl/fisher/24hrrecs.sql'
+    CALLCT:      'c:/cygwin/usr/local/src/ctscol/fisher_v0.8/Perl/fisher/callct.sql'
 fisher_qryset:
     iop:         'update sre12_io_calls set REPLSTR = ? where side_id = ?'
     tod:         'select topic_id,topic_file from mx7spa_topics where tod_yn = ?'

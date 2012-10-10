@@ -1,7 +1,7 @@
 #!c:/perl/bin/perl.exe
 
 use DBI;
-use lib "c:/fisher_v0.8/Perl";
+use lib "c:/cygwin/usr/local/src/ctscol/fisher_v0.8/Perl";
 use FshPerl;
 
 my $procid = shift;

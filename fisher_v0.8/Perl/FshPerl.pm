@@ -15,11 +15,11 @@ our @EXPORT = qw(get_dbh        rel_dbh       cvt_period
                  replstr        ioc_update    get_tod  get_phid
                  set_cip        set_sut run_pool_qry  clear_excl_list
                  init_excl_list npavalid      procvalid
-                 load_24hrrecs   load_callct  get_reclen $proc_dir %telco_mysql);
+                 load_24hrrecs   load_callct  get_reclen $proc_dir %telco_mysql %lui %collection);
 
 our $VERSION = 1.2;
 
-my $fshyml = LoadFile('c:/fisher_v0.8/Perl/FshPerl.yml');
+my $fshyml = LoadFile('c:/cygwin/usr/local/src/ctscol/fisher_v0.8/Perl/FshPerl.yml');
 
 our $proc_dir  = $fshyml->{proc}->{proc_dir};
 our $dberr_dir = $fshyml->{dberr}->{dberr_dir};
