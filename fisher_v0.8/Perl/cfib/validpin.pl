@@ -29,9 +29,8 @@ my $sth = $dbh->prepare( "SELECT p.id AS participant_id, p.active, COUNT(DISTINC
                           FROM participants p
                           JOIN audio_objects a ON p.id = a.participant_id
                           JOIN $lui{database}.enrollments e ON p.enrollment_id = e.id
-                          JOIN $lui{database}.users u ON e.user_id = u.id
                           JOIN $lui{database}.collections c ON e.collection_id = c.id
-                          WHERE u.cts_pin = $pin AND c.name = \'$collection{name}\'");
+                          WHERE p.pin = $pin AND c.name = \'$collection{name}\'");
 
 $sth->execute;
 # my ($subj_id,$active,$calls_done,$max_allowed,$group_id,$subgroup_id) = $sth->fetchrow;
@@ -83,10 +82,9 @@ else {
 
 
     # $sth = $dbh->prepare("select pin from lre11_subj where subj_id=?");
-    $sth = $dbh->prepare("SELECT u.cts_pin
+    $sth = $dbh->prepare("SELECT p.pin
                           FROM participants p
                           JOIN $lui{database}.enrollments e ON p.enrollment_id = e.id
-                          JOIN $lui{database}.users u ON e.user_id = u.id
                           WHERE p.id = ?");
     $sth->execute($ce_subj_id);
     ($ce_pin) = $sth->fetchrow;
