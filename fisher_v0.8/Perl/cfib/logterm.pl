@@ -76,7 +76,7 @@ if ( $dtbl{CALL_ID} ) {
     #     $sth->execute( $dtbl{SUBJ_ID} );
     #     $sth->execute( $dtbl{CE_SUBJ_ID} );
     #     $sth->finish;
-    }
+    # }
     
 }
 $dbh->disconnect;
