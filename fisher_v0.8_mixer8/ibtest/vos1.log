@@ -1,0 +1,147 @@
+111121 102308.3 VOS/NT   6.0 Dec  1 1999 15:35:27
+111121 102308.9 CFG file "vosnt.cfg" errno=2
+111121 102308.9 Using AutoScan to find Dialogic boards
+111121 102309.0 @X dx_open(dxxxB1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102309.0 Cannot open dxxxB1, Dialogic Software not started?
+111121 102309.0 12 Dialogic Voice/Fax boards found with 0 channels
+111121 102309.0 @X dt_open(dtiB1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102309.0 Cannot open dtiB1, Dialogic Software not started or BRI only?
+111121 102309.0 0 Dialogic DTI/ISDN(PRI) board(s) found with 0 channels
+111121 102309.0 @X cc_Open(p->-1, briS1, rfu)=-1 strerror(2)= No such file or directory
+111121 102309.0 Board Scan: no boards found
+111121 102309.0 @T startsys(3, 1, 0, 0, 10098604) = 24
+111121 102310.8 p:\vos6w\exe\vos6w.dll
+111121 102310.8 VOS/NT   6.0 Dec  1 1999 15:35:27
+111121 102310.8 VOS exit: 552 Initialization failed, see VOS1.LOG for more information
+111121 102410.9 p:\vos6w\exe\vos6w.dll
+111121 102410.9 VOS/NT   6.0 Dec  1 1999 15:35:27
+111121 102411.4 CFG file "vosnt.cfg" errno=2
+111121 102411.4 Using AutoScan to find Dialogic boards
+111121 102411.5 @X fx_open(dxxxB1C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.5 @X fx_open(dxxxB2C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.5 @X fx_open(dxxxB3C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.5 @X fx_open(dxxxB4C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.5 @X fx_open(dxxxB5C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.5 @X fx_open(dxxxB6C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.5 @X fx_open(dxxxB7C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.5 @X fx_open(dxxxB8C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.5 @X fx_open(dxxxB9C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.6 @X fx_open(dxxxB10C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.6 @X fx_open(dxxxB11C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.6 @X fx_open(dxxxB12C1, 0x0)=-1 strerror(2)= No such file or directory
+111121 102411.6 12 Dialogic Voice/Fax boards found with 48 channels
+111121 102411.7 2 Dialogic DTI/ISDN(PRI) board(s) found with 48 channels
+111121 102411.7 @X cc_Open(p->-1, briS1, rfu)=-1 strerror(2)= No such file or directory
+111130 153842.1 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111130 153842.3 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111130 153843.0 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111130 153843.2 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111130 153843.9 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111130 153844.1 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 173209.5 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 173209.7 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 173210.3 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 173210.5 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 173211.2 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 173211.4 answer:023a[7] @F sc_play(7,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 211918.1 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 211918.3 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 211919.0 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 211919.2 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 211919.8 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111212 211920.0 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111213 093328.0 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111213 093328.2 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111213 093328.9 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111213 093329.1 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111213 093329.7 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111213 093329.9 answer:023a[12] @F sc_play(12,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111214 172356.5 p:\vos6w\exe\vos6w.dll
+111214 172356.5 VOS/NT   6.0 Dec  1 1999 15:35:27
+111214 172357.1 CFG file "vosnt.cfg" errno=2
+111214 172357.1 Using AutoScan to find Dialogic boards
+111214 172357.1 @X fx_open(dxxxB1C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.1 @X fx_open(dxxxB2C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.1 @X fx_open(dxxxB3C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.1 @X fx_open(dxxxB4C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.2 @X fx_open(dxxxB5C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.2 @X fx_open(dxxxB6C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.2 @X fx_open(dxxxB7C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.2 @X fx_open(dxxxB8C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.2 @X fx_open(dxxxB9C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.2 @X fx_open(dxxxB10C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.2 @X fx_open(dxxxB11C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.2 @X fx_open(dxxxB12C1, 0x0)=-1 strerror(2)= No such file or directory
+111214 172357.2 12 Dialogic Voice/Fax boards found with 48 channels
+111214 172357.4 2 Dialogic DTI/ISDN(PRI) board(s) found with 48 channels
+111214 172357.4 @X cc_Open(p->-1, briS1, rfu)=-1 strerror(2)= No such file or directory
+111222 160430.0 p:\vos6w\exe\vos6w.dll
+111222 160430.0 VOS/NT   6.0 Dec  1 1999 15:35:27
+111222 160430.6 CFG file "vosnt.cfg" errno=2
+111222 160430.6 Using AutoScan to find Dialogic boards
+111222 160430.7 @X fx_open(dxxxB1C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.7 @X fx_open(dxxxB2C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.7 @X fx_open(dxxxB3C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.7 @X fx_open(dxxxB4C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.7 @X fx_open(dxxxB5C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.7 @X fx_open(dxxxB6C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.7 @X fx_open(dxxxB7C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.7 @X fx_open(dxxxB8C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.8 @X fx_open(dxxxB9C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.8 @X fx_open(dxxxB10C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.8 @X fx_open(dxxxB11C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.8 @X fx_open(dxxxB12C1, 0x0)=-1 strerror(2)= No such file or directory
+111222 160430.8 12 Dialogic Voice/Fax boards found with 48 channels
+111222 160430.9 2 Dialogic DTI/ISDN(PRI) board(s) found with 48 channels
+111222 160430.9 @X cc_Open(p->-1, briS1, rfu)=-1 strerror(2)= No such file or directory
+111224 131218.9 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111224 131219.1 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111224 131219.8 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111224 131220.0 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111224 131220.7 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111224 131220.9 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111226 173409.7 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111226 173409.9 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111226 173410.6 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111226 173410.8 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111226 173411.4 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111226 173411.6 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 100547.6 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 100547.8 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 100548.4 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 100548.6 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 100549.3 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 100549.5 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 161950.1 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 161950.3 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 161951.0 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 161951.2 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 161951.9 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111227 161952.1 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 134512.6 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 134512.8 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 134513.5 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 134513.7 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 134514.4 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 134514.6 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 144044.3 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 144044.5 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 144045.2 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 144045.4 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 144046.1 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111228 144046.3 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111229 113014.7 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111229 113015.0 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111229 113015.7 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111229 113015.9 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111229 113016.5 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111229 113016.7 answer:023a[8] @F sc_play(8,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111230 101021.2 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111230 101021.5 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111230 101022.1 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111230 101022.3 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111230 101023.0 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+111230 101023.2 answer:023a[10] @F sc_play(10,nc000*ENG.ul,768): 053 Cannot open, DOS error 13
+120104 110435.3 p:\vos6w\exe\vos6w.dll
+120104 110435.3 VOS/NT   6.0 Dec  1 1999 15:35:27
+120104 110435.3 VOS exit: Ctrl+Break or main window closed

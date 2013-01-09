@@ -1,0 +1,94 @@
+:Base CDEV.HLP
+1 VOS C/C++ Interface=Cdev_CONTENTS
+1 VOS/C Interface: Creating Runtime Link Libraries (RLLs)
+2 VOS/C Interface: Creating Runtime Link Libraries (RLLs)=VOS_C_Interface_Creating_Runtime_Link_Libraries_RLLs
+2 A Simple Example=A_Simple_Example
+2 C Source Code=C_Source_Code
+2 Argument Passing Convention=Argument_Passing_Convention
+2 Return Value=Return_Value
+2 .DEF File and MKLIBC.EXE / MKNTRLL.EXE=RLL_.DEF_File_and_MKLIBC.EXE_MKNTRLL.EXE
+2 Initialization Function=Initialization_Function
+2 Linking a Win32 RLL=Linking_A_Win32_RLL
+2 Linking a DOS RLL=Linking_a_DOS_RLL
+2 Loading Win32 RLLs=Loading_Win32_RLLs
+2 Installing DOS RLLs=Installing_DOS_RLLs
+2 Compiled RLL Function Calls in VOS .VX Code=Compiled_RLL_Function_Calls_In_VOS_VX_Code
+2 VOS Start-Up and Exit Functions=VOS_Start_Up_And_Exit_Functions
+1 RLL Service Functions
+2 RLL Service Functions=RLL_Service_Functions
+2 cksent=cksent_cdev
+2 deventf=deventf
+2 dtasknotify=dtasknotify
+2 getpid=getpid_cdev
+2 gettaskvar=gettaskvar
+2 hangup=hangup
+2 hangup_t=hangup_t
+2 settaskvar=settaskvar
+2 suspend=suspend
+2 suspterm=suspterm
+2 ueventf=ueventf
+2 voslog=voslog_cdev
+2 vid_writef=vid_writef
+2 wakeup=wakeup
+1 Checking the Sentinel
+2 Checking the Sentinel=Checking_The_Sentinel
+2 cksent=cksent_cdev
+1 Writing a Multi-Threaded Win32 RLL
+2 Writing a Multi-Threaded Win32 RLL=Writing_A_Multi_Threaded_Win32_RLL
+1 Example RLL Code
+2 Example RLL Code=Example_RLL_Code
+2 Example RLL Code: Getting the process id (task number).=Example_RLL_Code_Getting_the_process_id_task_number
+2 Example RLL Code: Calling a Dialogic D40LIB function=Example_RLL_Code_Calling_a_Dialogic_D40LIB_function
+2 Example RLL Code: Getting Dialogic events.=Example_RLL_Code_Getting_Dialogic_events
+2 Example RLL Code: Using suspend/wakeup to implement blocking calls on DOS.=Example_RLL_Code_Using_suspend_wakeup_to_implement_blocking_calls_on_DOS
+1 RLL.LIB Library Functions for MS-DOS
+2 RLL.LIB Library Functions for MS-DOS=RLL_LIB_Library_Functions_For_MS_DOS
+2 dosexit=dosexit
+2 io_open=io_open
+2 io_close=io_close
+2 io_read=io_read
+2 io_write=io_write
+2 io_lseek=io_lseek
+2 io_lock=io_lock
+2 io_commit=io_commit
+2 io_share=io_share
+2 io_setsize=io_setsize
+2 sprntf=sprntf
+1 Programming Hints
+2 Programming Hints=Programming_Hints
+2 Writing Blocking Functions=Writing_Blocking_Functions
+2 Calling Dialogic API functions from a Windows RLL=Calling_Dialogic_API_functions_from_a_Windows_RLL
+2 Callee Environment in DOS RLLs=Callee_Environment_in_DOS_RLLs
+2 Initialized Data in DOS RLLs=Initialized_Data_in_DOS_RLLs
+2 Memory Allocation in DOS RLLs=Memory_Allocation_in_DOS_RLLs
+2 File Handles in DOS RLLs=File_Handles_in_DOS_RLLs
+2 Memory Usage on DOS=Memory_Usage_on_DOS
+1 RLL API on DOS
+2 RLL API on DOS=RLL_API_on_DOS
+1 Gate API Functions on DOS
+2 Gate API Functions on DOS=Gate_API_Functions_on_DOS
+2 Gate API: Version/Install=Gate_API_Version_Install
+2 Gate API: Login=Gate_API_Login
+2 Gate API: Logout=Gate_API_Logout
+2 Gate API: Get Number of RLLs=Gate_API_Get_Number_of_RLLs
+2 Gate API: Get Number of RLL Functions=Gate_API_Get_Number_of_RLL_Functions
+2 Gate API: Get RLL Info=Gate_API_Get_RLL_Info
+2 Gate API: Get Function Info=Gate_API_Get_Function_Info
+2 Gate API: Call RLL Function=Gate_API_Call_RLL_Function
+2 Gate API: Call Start Function=Gate_API_Call_Start_Function
+2 Gate API: Call Event Handler Function=Gate_API_Call_Event_Handler_Function
+2 Gate API: Call Exit Function=Gate_API_Call_Exit_Function
+1 RLL Call-Back API Functions on DOS
+2 RLL Call-Back API Functions on DOS=RLL_Call_Back_API_Functions_on_DOS
+2 GETPID RLL Call-back=GETPID_RLL_Call_back
+2 SUSPEND RLL Call-back=SUSPEND_RLL_Call_back
+2 WAKEUP RLL Call-back=WAKEUP_RLL_Call_back
+2 VOSLOG RLL Call-back=VOSLOG_RLL_Call_back
+2 VID_WRITEF RLL Call-back=VID_WRITEF_RLL_Call_back
+2 DEVENTF RLL Call-back=DEVENTF_RLL_Call_back
+2 HANGUP RLL Call-back=HANGUP_RLL_Call_back
+1 TRLL Test Program
+2 TRLL Test Program=TRLL_Test_Program
+1 Technical Support Services from Parity Software
+2 Technical Support Services from Parity Software=Technical_Support_Services_from_Parity_Software
+2 Parity Software FTP Site=Parity_Software_FTP_Site

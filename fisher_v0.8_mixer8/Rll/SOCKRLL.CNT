@@ -1,0 +1,20 @@
+:Base Sockrll.HLP
+1 Sockets RLL
+2 Sockets RLL=Welcome
+2 Sockets RLL Functions=IP_RLL_functions.
+2 ws_Trace(OnOrOff)=ws_Trace
+2 ws_SetTaskName(Taskname)=ws_SetTaskName
+2 ws_GetMsg(timeout)=ws_GetMsg
+2 ws_Connect(Url, Remote_pc_name, Timeout)=ws_Connect
+2 ws_Disconnect(Url, Remote_pc_name, Timeout)=ws_Disconnect
+2 ws_PutMsg(Remote_pc_name, Remote_task_name, Msg, Timeout)=ws_PutMsg
+2 ws_GetSenderPCName()=ws_GetSenderPCName
+2 ws_GetSenderTaskName()=ws_GetSenderTaskName
+2 ws_GetNrPendingMsgs(option)=ws_GetNrPendingMsgs
+2 ws_FlushMsgs(option)=ws_FlushMsgs
+2 TCP/IP Protocol Used by VOS Sockets RLL for NT=TCP_IP_Protocol_Used_by_VOS_Sockets_RLL_for_NT
+2 Error Codes=Errors_Codes
+1 Technical Support
+2 Technical Support=Technical_Support
+2 Contacting Technical Support=Contacting_Technical_Support
+2 Parity Software FTP Site=Parity_Software_FTP_Site
