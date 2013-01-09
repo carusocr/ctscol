@@ -1,0 +1,244 @@
+
+
+
+1  Notes on RLL Programming
+
+Introduction
+
+These notes are designed at assist C programmers in understanding some of the
+subtler issues involved in creating high-quality VOS Runtime Link Libraries.
+
+
+Writing Blocking Functions
+
+Some programmers have difficulty understanding the suspend(), suspterm() and
+wakeup() RLL service function calls.
+
+These enable you to create functions like sc_play(), sleep(), msg_get() etc. which
+"put the VOS task to sleep" for an indefinite period of time.
+
+Your C code will continue executing after calling suspend() or suspterm(). The
+suspend()/suspterm() calls instruct the VOS scheduler to stop executing the task
+which called the C function currently being invoked. This takes effect once the
+C function returns control to VOS. The entire call to an RLL function is
+considered by VOS to be a single p-code instruction, p-code instructions are
+always executed in their entirety. Execution of the VOS task will be resumed
+once wakeup() has been called (suspend()) or a Dialogic terminating event is
+received (suspterm()).
+
+
+Callee Environment
+
+The initialization function, if any (defined with ,i in the .DEF file) is called
+before the RLL goes resident.
+
+All other routines are called from VOS, including the VOS startup and exit
+functions (,s and ,x). This means that:
+
+  þ The VOS stack is used in the call.
+
+  þ The current process id (PSP address) is that of VOS, not the RLL, when
+the function is called.
+
+  þ Standard file handles 0 to 4 (standard input, standard output, standard error,
+standard printer and standard aux) are not open: VOS closes all the default DOS
+handles on startup to make more handles available for playing and recording
+speech files, databases etc.
+
+
+The Stack
+
+The VOS stack is not very large, in order to save conventional memory. The first
+release of VOS 4.1, and all earlier versions, had a 2Kb stack. Later releases of
+4.1 and 4.2 may have stacks of 4Kb or 8Kb. VOS itself uses very little stack,
+typically not more than 512Kb.
+
+The safest rule is: use as little stack as possible in your RLL functions. Declare
+variables "static" inside your functions rather than "auto" (the default, which
+means "allocate on the stack).
+
+  t_func bad_boy(int argc, char **argv)
+     {
+     char String[128];    // Auto, allocated on stack
+     // ...
+
+  t_func good_girl(int argc, char **argv)
+     {
+     static char String[128];  // Static: much better
+     // ...
+
+Also, never make recursive function calls within an RLL. Note that stack
+overflow checking is disabled when your RLL code is compiled because of the
+/Gs compiler option. This is required because the stack checking code will
+assume that your function is using the same stack as the main program which
+made the RLL go resident, which is not the case. 
+
+Microsoft library run-time error messages are written to Stderr (DOS handle 3),
+which will have been closed by VOS on startup and may now refer, for example,
+to a database file. If your RLL generates a run-time error message, this will write
+to handle 3 and may corrupt a database, index or speech file.
+
+If you really do need a lot of stack (for example, you are using a third-party
+library which uses lots of stack), then you can switch to your own private stack.
+The basic technique is that your t_func function calls an assembler function
+which switches stacks. The assembler function then calls a C function on the
+new stack, which does its thing and returns to the assembler function. The
+assembler function then restores the stack and returns to the t_func function. If
+you need to use this technique and are not comfortable with the programming
+techniques involved, contact Parity's technical support for help.
+
+It may be a good idea to monitor the stack usage of your RLL if you are in
+doubt (for example, if you are calling third-party library functions). One way to
+do this is to set the remaining stack to a known value (eg 0xfe) and then to
+examine the stack on return from library calls to see how much of the stack area
+has been changed from the initial value. This is hard to do in an RLL because
+there is no easy way to know how big the VOS stack is: this test should be done
+in a stand-alone environment where the same functions are called from a
+conventional .EXE program.
+
+
+Initialized Data
+
+Data which is statically intialized, such as:
+
+  int StaticInit = 123;
+
+  t_func use_static(...
+
+will be initialized at the time the RLL is loaded. From then on, the value remains
+in memory however many times VOS is started and stopped. This means that
+RLL functions should be careful about changing variables which are statically
+initialized: remember that they will never be restored to their original values until
+the RLL is loaded again.
+
+Usually, statically initialized variables should be treated as "read-only" data, ie.
+as constants. The StaticInit variable above could probably be better implemented
+as a #define'd constant.
+
+
+Memory Allocation
+
+Each block of memory assigned by DOS to a process has an owner, which is the
+process id. DOS uses the current PSP address as the process id. This means that
+any memory allocated by DOS as a result of a malloc() call or a direct call to
+a function such as _dos_allocmem() by a t_func function will be considered by
+DOS as memory belonging to VOS, and will automatically be freed when VOS
+exits. In general, dynamic memory allocation by t_func functions is not a good
+idea beacause it may fail. Much better is to allocate all needed memory in the
+startup function or through statically allocated variables and arrays. This ensures
+that your RLL functions don't fail due to lack of memory, which is a hard error
+to recover from. If you do allocate memory within a t_func or ,s call, be sure to
+free this memory in the ,x exit function.
+
+
+File Handles
+
+Open files are also considerd by DOS to belong to a given process, identified by
+the process id (current PSP address). This means that any files opened by the
+startup (,s) function will not be available to a t_func call. Also, files opened by
+t_func calls will subtract from the handles available to VOS for speech files,
+databases etc; in other words, will come from the pool of fil_num (INIT.DEF)
+handles which VOS assigns to itself on startup. If VOS already has fil_num files
+open, an attempt to open a new file inside an RLL will fail.
+
+By using the DOS Get PSP and Set PSP functions, RLL functions can use their
+own private set of file handles which are not shared with VOS. In DOS versions
+5.0 and earlier, this can be done through undocumented INT 21 subfunctions 50
+and 51 (explained in Andrew Schulman's Undocumented DOS from Addison
+Wesley, or the chapter on TSR programming in The MS-DOS Encyclopedia from
+Microsoft Press). DOS 6.0 and later has documented Get PSP and Set PSP calls
+through different subfunctions, although 50 and 51 are apparently still supported.
+Setting the PSP back to the RLL also allows allocated DOS memory blocks to
+be assigned to the RLL, although this technique is not recommended.
+
+Remember that the standard file handles 0 to 4 are closed by VOS on startup,
+so printf() and other functions which use these standard handles will not work
+inside an RLL. Use the C voslog() function to get debugging and other output
+rather than printf().
+
+
+Memory Usage
+
+If you are running a real-mode (16-bit) version of VOS, then memory usage of
+your RLL may be a significant consideration. If you are writing a general-
+purpose RLL which may be used by many different VOS developers, then it
+should be written to be as small as possible. Writing compact, efficient functions
+could easily be the subject of a whole book. Some hints follow.
+
+Avoid linking any floating-point code. It is rare that VOS RLLs need floating-
+point. Using just one float variable or float constant, or linking one function such
+as printf(), can result in linking large parts of the floating point library into your
+RLL. The floating point library is generally big.
+
+Don't use stdio functions such as sprintf(), fopen() etc. These are large, complex
+functions which will add a lot of code to your RLL. The C io_ functions
+provided in the VOS C Developer's Toolkit are very small functions which
+provide direct entry points into MS-DOS file handle routines without CR/LF
+translation, buffering and the other fancy features which bloat up the stdio
+library. Remember that any stdio function which accepts a format string, such as
+sprintf, links in the whole floating point library because the compiler doesn't
+know whether you will use formats such as %f or %g. Note that the Kit includes
+an sprntf() function which is a good subset of sprintf() for integer, string and
+character data types.
+
+Don't "parse" configuration files in text form. Use the VOS technique of "pre-
+compiling" configuration files into the memory image of a structure which can
+then be read in efficiently. For example, suppose you have three variables you
+want to initialize from a configuration file, Flat (a logical value), Nr (an integer
+value), and Str (a string value). Define a structure:
+
+  struct InitFile
+     {
+     unsigned char Flag;    // 1 or 0 for YES/NO
+     int Nr;
+     char Str[STR_SIZE];
+     };
+
+Write a standalone program which accepts a configuration file INITFILE.DEF
+looking like this:
+
+  Flag = YES
+  Nr = 12
+  Str = "C:\INITIAL"
+
+and converts it into a InitFile structure, which it saves directly into a
+INITFILE.PAR file something like this:
+
+  struct InitFile InitData;
+  // ...
+  Handle = io_creat("INITFILE.PAR", 0);
+  if (Handle < 0)
+     // ...
+  Bytes = io_write(Handle, (char *) &InitData,
+            sizeof(InitData));
+  if (Bytes != sizeof(InitData))
+     // ...
+
+
+In your RLL, all you need to do is:
+
+struct InitFile InitPars;
+
+int ReadInitPars()
+  {
+  int Handle;
+  int Bytes;
+
+  Handle = io_open("INITFILE.PAR", IO_RDONLY);
+  if (Handle < 0)
+     return -1;
+  Bytes = io_read(Handle, (char *) &InitPars,
+            sizeof(InitPars));
+  if (Bytes != sizeof(InitPars))
+     return -1;
+  return 0;
+  }
+
+This code is extremely small and fast, and will be just the same how ever many
+new parameters you add to the InitFile structure. This is the technique used by
+VOS for INIT.PAR and all the other .PAR files.
+
+If you are calling Dialogic functions, edit the D40LIB and other files you might
+need so that only the functions you actually call are linked into your RLL.
+Adding the complete D40LIB and D40FCNS object files may add 20Kb or more
+of unnecessary code for your application.

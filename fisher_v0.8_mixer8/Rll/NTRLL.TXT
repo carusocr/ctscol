@@ -1,0 +1,487 @@
+Subject:        VOS/NT C Developer's Toolkit Notes
+
+This file describes the version of the VOS/NT C Developer's Toolkit.  For
+additional information about using RLLs with VOS, see the DOS C Developer's
+Toolkit documentation.  Except where specified in this text file, the DOS
+version of the documentation is correct and applies to the NT version of RLLs.
+
+Note:		See ..\MT\MT.TXT For multi-threading RLL notes.
+
+--------------------------------------------------------------------------------
+
+I.  Introduction
+
+This is the release of the Parity C Developer's Toolkit For VOS/NT. It 
+allows the developer to write functions in C or C++ that can be called from 
+within VOS/NT.  The libraries built with the C Developer's Toolkit are called 
+Runtime Link Libraries (RLLs), and make use of Windows NT Dynamic Link Library 
+(DLL) facilities to implement their functionality.  The RLL libraries created 
+by the C Developer's Toolkit are not standard DLLs though, and VOS/NT is 
+unable to call a function from within a standard DLL that has not been built 
+into an RLL using the C Developer's Toolkit utility MKNTRLL.EXE.
+
+II.  Rules For Building VOS/NT Runtime Link Libraries (RLLs)
+
+All arguments to RLL functions are null-terminated strings.  All RLL function
+return values are null-terminated strings.  The maximum length of a string in
+VOS/NT is 127 characters.  Any RLL function that returns a string longer than
+this will have the return value truncated to fit in the 127 character limit.
+
+The following is a trivial example of an RLL that implements a single function
+to return the value of two bytes XORed together (called XORF.C):
+
+	#include <stdlib.h>     // For atoi()
+	#include <windows.h>    // For Windows data types
+	#include <string.h>     // For sprintf()
+	#include "ntrll.h"      // For VOS/NT RLL declarations
+
+	char szReturn[10];
+
+	t_func xor(int argc, char **argv)
+		{
+		BYTE Byte1, Byte2;
+	
+		// Make sure two arguments passed in!
+		if(argc != 2)
+			return "";
+
+		// Convert the string arguments to integers		
+		Byte1 = (BYTE) atoi(argv[0]);
+		Byte2 = (BYTE) atoi(argv[1]);
+		
+		// XOR the two integers together and format the return string
+		sprintf(szReturn, "%d", (BYTE) (Byte1 ^ Byte2));
+		
+		// Return the string result to VOS
+		return szReturn;        
+		}
+
+This function would be called from within VOS/NT in the following manner:
+
+	Value = xor(Byte1, Byte2);
+	
+where 'Byte1' and 'Byte2' are variables declared and initialized earlier in 
+the VOS program.  The return value from xor() would be stored in the 'Value'
+variable.  Notice that the actual arguments to the xor() function defined in
+XORF.C are an integer count of the number of arguments, and an array of
+pointers to strings.  VOS automatically takes the arguments passed into the
+function in the program and creates the string array for passing to the RLL
+function.  Also notice that since all arguments passed into an RLL function are
+strings, they must be converted to the appropriate data type before the xor()
+function actually operates on them.
+
+Once the XORF.C file is created with the xor() function, it is necessary to
+create an RLL definition file so that MKNTRLL.EXE can create the Windows/NT
+DLL source code file that will allow VOS/NT to call the function.  MKNTRLL.EXE
+will create a .C source file with the same name as the definition file.  The
+XOR.DEF definition file would only have one line in it:
+
+	xor,2
+	
+This tells MKNTRLL.EXE to create a DLL that contains a single VOS RLL function
+xor() that will take two arguments.  Now run MKNTRLL.EXE to create the DLL 
+source code file:
+
+	MKNTRLL XOR
+	
+MKNTRLL.EXE assumes the .def extension by default.  This will create an XOR.C
+file which is the Windows/NT DLL source code.  There are now two .C files,
+XOR.C (DLL library source) and XORF.C (VOS/NT RLL source).  The actual DLL can
+now be created.  If Microsoft Visual C++ 2.x is being used to create the DLL, 
+the following steps would be taken:
+
+	1.  Select FILE | NEW | PROJECT and click the "OK" button.
+	2.  Name the project XOR, select project type "Dynamic Link-Library", 
+	    and click on the "Create" button.
+	3.  Once the project is created, select PROJECT | FILES, and add XOR.C 
+	    and XORF.C to the project.
+	4.  Select PROJECT | BUILD ALL and create XOR.DLL.
+
+Do to the architecture of Windows/NT and Dynamic Link Libraries, file handles
+should not be shared between VOS/NT and any RLL functions.  When necessary to 
+perform file I/O, or memory allocation, the RLL should declare and allocate all
+resources that will be used within the RLL.  If the VOS/NT program needs access
+to any of the RLL resources, then the RLL should provide access functions that
+VOS/NT calls to get the necessary data.
+
+When VOS/NT calls an RLL function, it blocks until the RLL function returns.
+This means that all RLL functions should be designed to return as quickly as
+possible.  Functions which will take a long time (i.e., appreciably longer
+than about 0.2 seconds) should be implemented using the multi-threading 
+mechanism detailed in ..\MT\MT.TXT.  If the RLL functions are not designed with
+this limitation in mind, then VOS/NT will be unable to service the Dialogic 
+event queue, and some events could conceivably be lost.
+
+As an example, suppose that an RLL was created to access an SQL database.  An
+SQL database is accessed using a client/server architecture.  This means that
+a client application formats a query for the SQL server, and then waits for the
+returned answer.  Since the period of time that the query takes to return is 
+dependent on the nature of the query and the available bandwidth on the network
+link between the SQL client and the SQL server, it is possible for the query to
+take long enough to return to cause VOS/NT to miss servicing the Dialogic event
+queue in time to catch all of the events.
+
+If the SQL RLL functions were not implemented using the multi-threaded model,
+then in order to ensure that VOS/NT and the RLL would work correctly no matter 
+how long the query would take, the developer of the SQL RLL would break the 
+query function up into separate pieces.  One RLL function would format the query
+and send it to the SQL server and return immediately.  The RLL would then
+implement a second function that could be called to get the status of the query,
+and if the reply was ready would return the value to VOS/NT.  Assume that the
+two functions are called SendQuery() and GetQryResult().  In the VOS/NT program,
+the functions would be called in the following way:
+
+	...
+	code = SendQuery(QueryStr);
+	if(code != 0)
+		voslog("Error:  SendQuery() = " & code);
+	else
+		while(1)
+			Result = GetQryResult();
+			if(Result strneq "")
+				break;
+			endif
+			sleep(1);
+		endwhile
+	endif
+	...
+	
+This code allows VOS/NT to perform a blocking function call to query the SQL
+server from the point of view of the individual VOS/NT program, but still 
+allows VOS/NT to continue servicing the Dialogic event queue and all other
+VOS/NT programs.  Note that this is not a good way to write code for a 
+production system because the VOS/NT task will block forever if the query does
+not return an answer (due to the while(1) loop).  The code could be modified to 
+break out of the while loop when a timer had expired, or the SQL RLL could 
+implement a timer so that GetQryResults() would return an error when the timer 
+had elapsed.  Please review the file ..\MT\MT.TXT for notes about using
+multi-threading to perform blocking RLL function calls in VOS.
+
+The example XOR.DEF file shown above listed the xor() function and the number
+of arguments the function takes.  In addition to the number of arguments, the
+following symbols are legal in place of the number of arguments for an RLL
+function:
+
+	?       Function takes a variable number of arguments
+	s       Function is an RLL start-up function and gets called
+		automatically when VOS/NT loads the DLL.
+	i       Same as 's' above.  Provided for backwards compatibility with
+		DOS RLL libraries.
+	x       Function is an RLL exit function that gets called automatically
+		when VOS/NT exits
+		
+The start ('s' or 'i') and exit ('x') functions must be defined as taking no
+arguments and returning no values (i.e., void SomeStartFunc(void)) in order for
+VOS/NT to call them automatically.  Also, it is impossible to call the start 
+or exit functions explicitly from within a VOS/NT program.
+
+Since VOS/NT must have the RLL functions defined exactly as previously shown,
+it is impossible to directly call a function from an external DLL from within
+VOS/NT.  In order to call functions from external DLLs, a VOS/NT RLL must be 
+created with wrapper functions that actually call the external DLL functions.
+As an example, assume that there is a DLL called WAV.DLL that implements some
+sound board functions that allow a program to record or play .WAV files using 
+the DLL functions RecordWav() and PlayWav().  A VOS/NT RLL that would allow a 
+developer to play and record .WAV files from within VOS/NT would be created 
+with a start function that loaded the DLL and got the function addresses, and
+wrapper functions to invoke the RecordWav() and PlayWav() functions:
+
+	1.  A start function that automatically loaded the WAV.DLL library
+	and registered the functions in the library.  This would be done with
+	calls to the Windows API functions LoadLibrary() and GetProcAddress().
+	FARPROC pointers to all of the functions that would be accessed from
+	within VOS would be allocated in the RLL:
+	
+	#include <windows.h>
+	#include "ntrll.h"
+	
+	// Declare DLL handle and function pointers to WAV.DLL functions
+	HINSTANCE hDLL;
+	FARPROC fpRecWav;
+	FARPROC fpPlayWav;
+	
+	char szReturn[10];
+	
+	// VOS/NT start function
+	void WavStart(void)
+		{
+		DWORD dwError;
+
+		fpRecWav = fpPlayWav = NULL;            
+		hDLL = LoadLibrary("WAV.DLL");
+		if(hDLL == NULL)
+			{
+			dwError = GetLastError();       
+			voslog("Error:  LoadLibrary(WAV.DLL) = %ld", dwError);
+			}
+		
+		fpRecWav = GetProcAddress(hDLL, "RecordWav");
+		if(fpRecWav == NULL)
+			// Handle error
+		fpPlayWav = GetProcAddress(hDLL, "PlayWav");
+		...     // etc.
+		}
+		
+	2.  When the VOS/NT program wanted to record a .WAV file, it would call
+	the RLL function RecordWav() which would actually call the WAV.DLL 
+	function to record the file:
+	
+	// RecordWav(pszFilename)
+	t_func RecordWav(int argc, char **argv)
+		{
+		DWORD dwReturn;
+		
+		// Record to filename specified in argv[0]
+		dwReturn = (*fpRecWav(argv[0]));
+		sprintf(szReturn, "%ld", dwReturn);
+		return szReturn;
+		}
+
+	3.  A similar PlayWav() RLL function would also be defined.
+	
+	4.  Most likely, a VOS/NT exit function would be defined to free the 
+	DLL from memory:
+	
+	// VOS/NT exit function
+	void WavExit(void)
+		{
+		if(hDLL)
+			{
+			FreeLibrary(hDLL);
+			hDLL = NULL;
+			}
+		}
+	
+	5.  The WAV.DEF file might look like this:
+	
+		WavStart,s
+		RecordWav,1
+		PlayWav,1
+		WavExit,x
+
+The mechanism of writing a "wrapper" RLL function that calls the actual 
+external DLL function allows the VOS/NT developer to call any DLL function.
+
+III.  Specifying RLLs To Be Loaded For VLC/NT & VOS/NT
+
+In order to compile a VOS/NT application that makes a call to an RLL function, 
+it is necessary to specify to VLC/NT what RLL libraries are to be used.  This 
+can be done in two different ways.
+
+First, VLC/NT looks for an environment variable 'VOSRLL' that specifies a 
+semi-colon delimited list of full path and filenames to the RLLs to be used.
+As an example, if the VOS application was using the SmoothPhraser RLL (ST.DLL)
+and the Fixed Point Math RLL (FP.DLL) found in the C:\WIN32APP\VOSNT\RLL 
+directory, the environment variable command would look like this:
+
+	set VOSRLL=c:\win32app\vosnt\rll\st.dll;c:\win32app\vosnt\rll\fp.dll
+	
+Second, VLC/NT uses a new command line parameter 'r' to specify what RLL
+libraries to use for the compile.  If the name of the example VOS/NT program 
+that used the RLL functions was TEST.VS, the VLC/NT command line would be:
+
+	vlcnt -rc:\win32app\vosnt\rll\st.dll;c:\win32app\vosnt\rll\fp.dll test
+	
+If the '-r' parameter is used, the RLLs specified by the environment variable
+are ignored.
+
+It is obvious from the above examples that if there were more than about two 
+RLLs specified, or if the RLLs had long path names, then this method could 
+quickly become cumbersome.  Therefore, in addition to specifying the actual 
+names of the RLLs on the command line, a response file can be used instead.
+The format of a response file is that it contains one RLL specified on each 
+line in the file. If a file TEST.RSP were created with the following two 
+lines:
+
+	c:\win32app\vosnt\rll\st.dll
+	c:\win32app\vosnt\rll\fp.dll
+
+then TEST.VS could be compiled with:
+
+	vlcnt -r@test.rsp test
+
+The use of the '@' symbol tells VLC/NT that the name is a response file, and 
+not an actual RLL.  The response file can have any name and/or extension.  A
+response file can be specified with both the VLC/NT command line and the 
+environment variable.  An example of specifying the same response file with
+the VOSRLL environment variable would be:
+
+	set VOSRLL=@test.rsp
+
+When VLC/NT compiles a VOS application, it creates a table of RLL functions 
+that VOS/NT calls using the ordinal number of the RLL function.  If there were
+two RLLs used to compile an application, the first RLL having 3 functions, and
+the second RLL having five functions, there would be a table with 8 functions
+with ordinal numbers 1 - 8, where the first RLL had functions with ordinal 
+numbers 1 - 3, and the second had ordinal numbers 4 - 8.  If the two RLLs were 
+loaded in the opposite order, then the first RLL would contain functions with 
+ordinal numbers 1 - 5, and the second RLL would contain functions with ordinal 
+numbers 6 - 8.  Since VOS/NT calls the functions using only the ordinal number,
+different functions would be called if the libraries are specified in a 
+different order when they are run from when they are compiled.
+
+THIS MEANS THAT VOS/NT MUST LOAD THE RLLS IN THE SAME ORDER THAT VLC/NT 
+USED WHEN COMPILING THE APPLICATION.
+
+VLC/NT writes the names of the RLLs used and their loading order into the .VX 
+file for later use by VOS/NT as a check.
+
+VOS/NT uses the same two mechanisms to specify and load RLLs necessary to run a
+program.  RLLs can be specified using the environment variable VOSRLL, or they
+can be specified on the VOS/NT command line using the '-r' command line 
+parameter.
+
+When VOS/NT reads in the .VX file, it checks the loading order and version of
+the libraries used to build the .VX file with the RLLs actually loaded by 
+VOS/NT.  If they are different, a warning message is printed to the VOS1.LOG
+file with the details of which RLL has been loaded out of order, or has a
+different version date.  This is only a warning message, and VOS/NT will 
+continue to run, although the results from RLL function calls will be invalid,
+or will possibly produce errors such as 'invalid nr args', etc.
+
+IV.  VOS/NT Runtime Link Library Call-Back Functions
+
+The VOS/NT C Developer's Toolkit implements VOS/NT call-back functions to allow
+the RLL developer to query the sentinel device (cksent()), get the current 
+process ID (PID) (getpid()), force a hang-up on a particular channel (hangup()),
+put the current task to sleep (suspend()), put the current task to sleep and
+wait for a Dialogic terminating event (suspterm()), write a string to the 
+VOS1.LOG file (voslog()), write a string to the terminal window (vid_write()),
+and wake-up a task that was previously put to sleep with suspend() (wakeup()).
+
+The operation of these functions is described below:
+	
+A.  Checking Sentinel Serial & Developer ID Numbers
+
+Use the cksent() call-back function to query the sentinel device for the serial
+or developer ID number.  cksent() is defined as:
+
+	unsigned cksent(unsigned uType);
+
+where:
+
+	uType   = 1     --> return sentinel serial number
+		= 2     --> return sentinel developer ID number
+
+cksent() is supported in both single-threaded and multi-threaded RLL functions.
+
+B.  Getting The Process ID Of The Current Task
+
+The Process ID (PID) of the task that called an RLL function can be retrieved
+using the getpid() function which is defined as follows:
+
+	unsigned getpid(void);
+
+Valid VOS/NT PIDs fall within the range 0 <= PID <= 254.  getpid() is not
+supported when called from multi-threaded RLL functions.
+
+C.  Simulate A Hang-Up Event On A Voice Channel
+
+The hangup() function is used to simulate a hang-up event on a voice channel.
+This allows the task controlling the voice channel to receive a loop-drop event
+and jump to onsignal for any end-of-call processing.  hangup() is defined as:
+
+	int hangup(unsigned chan);
+
+where:
+
+	chan    = Voice channel to receive loop-drop event.
+	
+The hangup() function returns 0 on success, otherwise it returns -1.
+hangup() is supported in both single-threaded and multi-threaded RLL functions.
+
+D.  Put A Task To Sleep
+
+A task can be put to sleep with the suspend() function, defined as:
+
+	int suspend(void);
+
+The suspend() function always returns 0.  suspend() is not supported when
+called from within a multi-threaded RLL function.
+
+E.  Put A Task To Sleep And Wait On A Terminating Event
+
+A task can be put to sleep to wait on a Dialogic terminating event using the
+suspterm() function defined as follows:
+
+	int suspterm(unsigned chan);
+
+where:
+
+	chan    = Voice channel that will be monitored for the terminating 
+		  event.
+
+suspterm() returns 0 on success, otherwise it returns -1.  suspterm() is not
+supported when called from within a multi-threaded RLL function.
+
+F.  Writing Strings To VOS1.LOG File
+
+The voslog() function is used to write a string to the VOS1.LOG file.  It is
+defined as:
+
+	void voslog(LPSTR pszFormat, ...);
+
+Except for the return type being 'void', the syntax of voslog() is identical 
+to that for the standard C library function printf().  That is, voslog() 
+takes a format string and a variable number of arguments specified by the 
+format string.
+
+voslog() is supported in both single-threaded and multi-threaded RLL functions.
+
+G.  Writing Strings To The Terminal Window
+
+The vid_write() function is used to write a string to the VOS/NT Terminal
+Window.  It is defined as:
+
+	void vid_write(LPSTR pszFormat, ...);
+
+Again, the syntax is the same as for printf().
+
+vid_write() is supported in both single-threaded and multi-threaded RLL
+functions.
+
+H.  Waking Up A Task That Was Previously Suspended
+
+A task that was previously suspended using the suspend() call-back function
+can be woken up using the wakeup() function.  It is defined as:
+
+	int wakeup(unsigned uPID, LPSTR pszRetCode);
+	
+where:
+
+	uPID            = Process ID of the task to wake-up
+	pszRetCode      = Return value to wake the task with
+
+The wakeup() function returns 0 on success, otherwise it returns -1.
+wakeup() is supported in both single-threaded and multi-threaded RLL functions.
+
+There are two call-back functions available in the VOS/DOS version of the C
+Developer's Toolkit that are not implemented in the VOS/NT version of the 
+toolkit.  These are:
+
+	deventf()
+	dgetevt()
+
+V.  Compatibility Between DOS and NT Runtime Link Libraries
+
+Any VOS RLL libraries that provide support for third party hardware will most
+likely not be compatible with a VOS/NT version of the RLL because the hardware
+device probably uses separate device drivers in DOS and NT that implement 
+different function APIs.  This means that in order to port an RLL that supports
+a hardware device from DOS to NT, it will be necessary to get the NT version of
+the device driver and rewrite the RLL to make the new function API calls as 
+necessary.
+
+Any DOS version of RLLs that implement general functionality such as string
+processing, etc. can probably be ported to a VOS/NT version by simply building
+the correct make file, processing the RLL source code with MKNTRLL.EXE and then
+building the DLL with the appropriate C/C++ compiler.  As an example, the fixed
+point RLL that Parity distributes with VOS5 was ported from DOS to NT versions
+in about the 15 minutes it took to create a DLL project in Visual C++ 2.0.
+
+VI.  Example RLLs Included With C Developer's Toolkit
+
+The source code for the fixed-point math RLL is included with this release
+of the C Developer's Toolkit.  It can be found in the FP sub-directory.  An
+example of writing a multi-threaded RLL function can be found in the MT
+sub-directory.

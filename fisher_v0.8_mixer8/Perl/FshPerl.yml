@@ -1,0 +1,56 @@
+proc:
+    proc_dir:    'p:/proc'
+dberr:
+    dberr_dir:   'p:/dberr'
+telco_mysql:
+    driver:      'mysql'
+    host:        'dbm.ldc.upenn.edu'
+    database:    'ldc_db_production'
+    userid:      'ldc_db'
+    passwd:      'replaceme'
+    dbistr:      'DBI:mysql:host=dbm.ldc.upenn.edu;database=ldc_db_production'
+lui:
+    database:    'rails_production'
+collection:
+    name:        'MIXER8 Pilot'
+projname:
+    1:           'mx3'
+    2:           'fsp'
+    3:           'fsh'
+    4:           'mx7spa'
+    5:           'sre12'
+projtbl:
+    subj:        
+        fsp:     'fsh_subj'
+        mx3:     'mx3_subj'
+    br_calls:
+        fsp:     'fsp_br_calls'
+        mx3:     'mx3_br_calls'   
+    exclude:
+        fsp:     'fsp_exclude'
+        mx3:     'mx3_exclude'
+    io_calls:
+        fsp:     'fsp_io_calls'
+        mx3:     'mx3_io_calls'
+    subj_pairs:   
+        fsp:     'fsp_subj_pairs'
+        mx3:     'mx3_subj_pairs' 
+    topics:
+        fsp:     'fsp_topics'
+        mx3:     'mx3_topics'
+fisher_qryfiles:
+    FULLPOOL:    'c:/fisher_v0.8/Perl/fisher/getcallee.sql'
+    LDCPOOL:     'c:/fisher_v0.8/Perl/fisher/getcleldc.sql'
+    TDYRECS:     'c:/fisher_v0.8/Perl/fisher/tdyrecs.sql'
+    24HRRECS:    'c:/fisher_v0.8/Perl/fisher/24hrrecs.sql'
+    CALLCT:      'c:/fisher_v0.8/Perl/fisher/callct.sql'
+fisher_qryset:
+    iop:         'update sre12_io_calls set REPLSTR = ? where side_id = ?'
+    tod:         'select topic_id,topic_file from mx7spa_topics where tod_yn = ?'
+    cip:         'update telco_subjects set CIP = ? where subj_id = ?'
+    sut:         'update telco_subjects set sut = date_add(now(),interval ? HOUR_MINUTE) where subj_id = ?'
+    excl_clr:    'delete from sre12_exclude where subj_id = ?'
+    excl_get:    'select distinct subj_id from sre12_exclude'
+    excl_pairs:  'select subj_id,spoke_to from sre12_subj_pairs where spoke_to = ? or subj_id = ?'
+    excl_insrt:  'insert into sre12_exclude(subj_id, spoke_to) values (?,?)'
+    

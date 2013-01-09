@@ -1,0 +1,24 @@
+1) Hello. You have reached the LDC's callfriend platform.
+
+2) Please Enter your PIN followed by the pound sign
+
+3) Thank you
+
+4) Please hold while we try to reach your call partner
+
+5) Welcome to both of you and thank you for
+participating. Recording will begin
+immediately. You may begin your conversation after
+the tone.
+
+This is the LDC's callfriend platform. You have a call
+from <Mr. Black>. Press 1 to accept this call, or 2 to 
+end this call.
+
+We were unable to reach your call parter. YOu may 
+try your call again later.
+
+We reached your call partner, but they rejected the call.
+
+We reached your call partner, and they has accepted the call.
+
