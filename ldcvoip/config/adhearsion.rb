@@ -35,3 +35,4 @@ Adhearsion.config do |config|
   # config.punchblock.password = "password" # Your AMI password
   # config.punchblock.host = "asterisk.local-dev.mojolingo.com" # Your AMI host
 end
+

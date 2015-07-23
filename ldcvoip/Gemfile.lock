@@ -139,6 +139,3 @@ DEPENDENCIES
   adhearsion-asr
   punchblock (~> 2.7)
   rspec
-
-BUNDLED WITH
-   1.10.5
