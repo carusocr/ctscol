@@ -27,6 +27,8 @@ GEM
       adhearsion (~> 2.4)
       punchblock (~> 2.0)
       ruby_speech (~> 2.1)
+    adhearsion-asterisk (1.5.1)
+      adhearsion (~> 2.0)
     adhearsion-loquacious (1.9.3)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
@@ -137,5 +139,9 @@ PLATFORMS
 DEPENDENCIES
   adhearsion (~> 2.6)
   adhearsion-asr
+  adhearsion-asterisk
   punchblock (~> 2.7)
   rspec
+
+BUNDLED WITH
+   1.10.5

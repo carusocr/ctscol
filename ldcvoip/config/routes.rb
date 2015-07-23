@@ -2,6 +2,6 @@
 
 Adhearsion.router do
 
-  route 'default', LdcTestController
+  route 'default', SayTime
 
 end
