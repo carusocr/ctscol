@@ -30,9 +30,9 @@ Adhearsion.config do |config|
   ##
   # Use with Asterisk
   #
-  # config.punchblock.platform = :asterisk # Use Asterisk
-  # config.punchblock.username = "manager" # Your AMI username
-  # config.punchblock.password = "password" # Your AMI password
-  # config.punchblock.host = "asterisk.local-dev.mojolingo.com" # Your AMI host
+  config.punchblock.platform = :asterisk # Use Asterisk
+  config.punchblock.username = "adh" # Your AMI username
+  config.punchblock.password = "ldc_adhearsion" # Your AMI password
+  config.punchblock.host = "127.0.0.1"# Your AMI host
 end
 

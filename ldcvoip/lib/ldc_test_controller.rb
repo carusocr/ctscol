@@ -1,8 +1,13 @@
 # encoding: utf-8
 
 class LdcTestController < Adhearsion::CallController
+
+  attr_accessor :number, :attempt
+
   def run
     answer
-    result = ask "Enter PIN", terminator: '#'
+    play '/var/lib/asterisk/sounds/en/conf-onlyperson.gsm'
+    hangup
   end
+
 end
