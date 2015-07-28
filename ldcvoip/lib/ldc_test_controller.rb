@@ -30,15 +30,21 @@ class CheckPIN < Adhearsion::CallController
 
   def run
     result = ask '/var/lib/asterisk/sounds/en/conf-getpin.gsm', terminator: '#'
-    if result.response.to_i == 4444
+    if result.response.to_i == 44
       play_digits(result.response)
       play '/var/lib/asterisk/sounds/en/auth-thankyou.gsm'
-      dial 'sip:crc2@127.0.0.1'
-      #invoke LinkUsers
+      #dial user here...doesn't actually call until client hangs up? Why?
+      invoke LinkUsers
+      #case status.result
+      #when :answer
+      #when :error, :timeout, :no_answer
+      #  hangup
+      #end
     else
       play_digits(result.response)
       play '/var/lib/asterisk/sounds/en/auth-incorrect.gsm'
     end
+    hangup
   end
 
 end
@@ -46,7 +52,9 @@ end
 class LinkUsers < Adhearsion::CallController
 
   def run
-    dial 'sip:crc2@127.0.0.1'
+    # same issues with both methods
+    #Adhearsion::OutboundCall.originate 'SIP/crc2', from: 'SIP/crc'
+    dial 'SIP/crc2', from: 'SIP/crc'
   end
 
 end
