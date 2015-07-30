@@ -7,11 +7,11 @@ class LdcTestController < Adhearsion::CallController
 
   attr_accessor :number, :attempt
   
-
   def run
     answer
     menu "#{SND_DIR}/conf-usermenu.gsm", timeout: 3, tries: 3 do
-      match 1, CheckPIN
+      #match 1, CheckPIN
+      match 1, LinkUsers
       match 2, SayTime
       match 3..10 do |dialed|
         play_digits(dialed)
@@ -34,7 +34,9 @@ class CheckPIN < Adhearsion::CallController
       play_digits(result.response)
       play '/var/lib/asterisk/sounds/en/auth-thankyou.gsm'
       #dial user here...doesn't actually call until client hangs up? Why?
-      invoke LinkUsers
+      # LinkUsers works in direct call from case statement but not here...why?
+      #invoke LinkUsers
+      #dial 'SIP/crc2', from: 'SIP/crc'
       #case status.result
       #when :answer
       #when :error, :timeout, :no_answer
@@ -44,7 +46,7 @@ class CheckPIN < Adhearsion::CallController
       play_digits(result.response)
       play '/var/lib/asterisk/sounds/en/auth-incorrect.gsm'
     end
-    hangup
+    #hangup
   end
 
 end
@@ -54,6 +56,7 @@ class LinkUsers < Adhearsion::CallController
   def run
     # same issues with both methods
     #Adhearsion::OutboundCall.originate 'SIP/crc2', from: 'SIP/crc'
+    # this works vv
     dial 'SIP/crc2', from: 'SIP/crc'
   end
 
